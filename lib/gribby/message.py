@@ -1,7 +1,6 @@
 
 
 import c_interface
-from c_interface import so
 
 
 class Message(object):
@@ -21,5 +20,22 @@ class Message(object):
         pass
     
     def __getattr__(self, key):
-        return c_interface.grib_get_long(self.grib_handle, key)
+        
+        # is the key defined?
+        if not c_interface.grib_is_defined(self.grib_handle, key):
+            raise ValueError("Key {} not defined".format(key))
+        
+        # what is the native type of the key?
+        key_type = c_interface.grib_get_native_type(self.grib_handle, key)
+        
+        if key_type == 1:
+            result = c_interface.grib_get_long(self.grib_handle, key)
+        elif key_type == 2:
+            result = c_interface.grib_get_double(self.grib_handle, key)
+        elif key_type == 3:
+            result = c_interface.grib_get_string(self.grib_handle, key)
+        else:
+            raise ValueError("Unhandled key type {}".format(key_type))
+        
+        return result
     

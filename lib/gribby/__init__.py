@@ -34,3 +34,5 @@ if __name__ == "__main__":
 
     message = Message(from_samples="GRIB2")
     print message.edition
+    print message.latitudeOfFirstGridPointInDegrees
+    print message.centre
