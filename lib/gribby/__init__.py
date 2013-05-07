@@ -7,17 +7,9 @@ https://software.ecmwf.int/wiki/display/GRIB/Releases
 
 """
 
-import ctypes
-
 
 __version__ = 0.1
 
-
-so = ctypes.CDLL("/data/local/itbb/grib/grib_api-1.10.0/lib/libgrib_api.so")
-
-print so
-
-print so.grib_samples_new_from_file("GRIB2")
 
 def read(file):
     
@@ -30,4 +22,15 @@ def read(file):
         
         
         
-# new function in 1.10.0: grib_is_defined
+# new function in 1.10.0:
+#    grib_is_defined
+
+
+
+
+if __name__ == "__main__":
+
+    from message import Message
+
+    message = Message(from_samples="GRIB2")
+    print message.edition
