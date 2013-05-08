@@ -5,7 +5,7 @@ import ctypes
 so = ctypes.CDLL("/data/local/itbb/grib/grib_api-1.10.0/lib/libgrib_api.so")
 
 
-# grib_handle* grib_handle_new_from_samples (grib_context* c, const char* res_name)
+# grib_handle* grib_handle_new_from_samples (grib_context* c, const char* res_name);
 so.grib_handle_new_from_samples.argtypes = [ctypes.c_void_p, ctypes.c_char_p]
 def grib_handle_new_from_samples(name):
     return so.grib_handle_new_from_samples(0, name)
@@ -23,6 +23,32 @@ def grib_get_native_type(grib_handle, key):
     value = ctypes.c_int()
     so.grib_get_native_type(grib_handle, key, ctypes.byref(value))
     return value.value
+
+
+# Setters
+
+
+#int grib_set_long(grib_handle* h, const char*  key , long val);
+so.grib_set_long.argtypes = [ctypes.c_void_p, ctypes.c_char_p, ctypes.c_long]
+def grib_set_long(grib_handle, key, value):
+    so.grib_set_long(grib_handle, key, value)
+
+
+#int grib_set_double(grib_handle* h, const char*  key , long val);
+so.grib_set_double.argtypes = [ctypes.c_void_p, ctypes.c_char_p, ctypes.c_double]
+def grib_set_double(grib_handle, key, value):
+    so.grib_set_double(grib_handle, key, value)
+
+
+#int grib_set_string(grib_handle* h, const char*  key , const char* mesg, size_t *length);
+so.grib_set_string.argtypes = [ctypes.c_void_p, ctypes.c_char_p, ctypes.c_char_p, ctypes.c_void_p]
+def grib_set_string(grib_handle, key, value):
+    mesg = ctypes.create_string_buffer(value)
+    length = ctypes.c_int(len(value)+1)
+    so.grib_set_string(grib_handle, key, mesg, ctypes.byref(length))
+
+
+# Getters
 
 
 # int grib_get_long(grib_handle* h, const char* key, long* value);

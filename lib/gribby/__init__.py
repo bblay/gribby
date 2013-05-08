@@ -30,9 +30,37 @@ def read(file):
 
 if __name__ == "__main__":
 
-    from message import Message
+    # MOVE THIS INTO THE TESTS, WHEN THEY CAN BE MADE TO RUN
 
+    from message import Message
     message = Message(from_samples="GRIB2")
-    print message.edition
+
+    print "test get"
+    print message.localTablesVersion
     print message.latitudeOfFirstGridPointInDegrees
     print message.centre
+    print ""
+    
+    print "test set"
+    message.localTablesVersion = 123
+    message.latitudeOfFirstGridPointInDegrees = 123.456
+    message.centre = "egrr"
+    print message.localTablesVersion
+    print message.latitudeOfFirstGridPointInDegrees
+    print message.centre
+    print ""
+
+    print "test get non-native type"
+    print message.get_double("localTablesVersion")
+    print message.get_long("latitudeOfFirstGridPointInDegrees")
+    print message.get_long("centre")
+    print ""
+
+    print "test set non-native type"
+    message.set_double("localTablesVersion", 234.0)
+    message.set_long("latitudeOfFirstGridPointInDegrees", 4)
+    message.set_long("centre", 7)
+    print message.localTablesVersion
+    print message.latitudeOfFirstGridPointInDegrees
+    print message.centre
+    print ""
